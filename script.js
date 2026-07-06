@@ -5,6 +5,10 @@ const restartButton = document.querySelector(".restart-action");
 const musicToggle = document.querySelector(".music-toggle");
 const particleLayer = document.querySelector(".particle-layer");
 const transitionFlash = document.querySelector(".transition-flash");
+const photoButtons = [...document.querySelectorAll(".memory-photo")];
+const lightbox = document.querySelector(".photo-lightbox");
+const lightboxImage = document.querySelector(".lightbox-image");
+const lightboxCloseButtons = document.querySelectorAll(".lightbox-close, .lightbox-backdrop");
 
 let currentScene = 0;
 let isTransitioning = false;
@@ -116,6 +120,32 @@ function goToScene(nextScene, sourceElement) {
   window.setTimeout(() => {
     isTransitioning = false;
   }, 820);
+}
+
+function openLightbox(button) {
+  if (!lightbox || !lightboxImage) return;
+
+  const src = button.dataset.previewSrc;
+  const alt = button.dataset.previewAlt || button.querySelector("img")?.alt || "照片预览";
+  if (!src) return;
+
+  lightboxImage.src = src;
+  lightboxImage.alt = alt;
+  lightbox.classList.add("is-open");
+  lightbox.setAttribute("aria-hidden", "false");
+}
+
+function closeLightbox() {
+  if (!lightbox || !lightboxImage) return;
+
+  lightbox.classList.remove("is-open");
+  lightbox.setAttribute("aria-hidden", "true");
+  window.setTimeout(() => {
+    if (!lightbox.classList.contains("is-open")) {
+      lightboxImage.removeAttribute("src");
+      lightboxImage.alt = "";
+    }
+  }, 240);
 }
 
 function setupAudio() {
@@ -253,6 +283,20 @@ if (restartButton) {
 if (musicToggle) {
   musicToggle.addEventListener("click", toggleMusic);
 }
+
+photoButtons.forEach((button) => {
+  button.addEventListener("click", () => openLightbox(button));
+});
+
+lightboxCloseButtons.forEach((button) => {
+  button.addEventListener("click", closeLightbox);
+});
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && lightbox?.classList.contains("is-open")) {
+    closeLightbox();
+  }
+});
 
 window.addEventListener("resize", updateViewportHeight);
 window.addEventListener("orientationchange", () => {

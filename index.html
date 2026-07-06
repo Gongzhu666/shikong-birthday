@@ -4,10 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>失控生日快乐</title>
-  <meta name="description" content="一份送给失控的生日礼物。">
+  <meta name="description" content="一份专属生日祝福正在等你打开。">
+  <meta name="theme-color" content="#fff8ea">
+  <link rel="canonical" href="https://gongzhu666.github.io/shikong-birthday/">
+  <link rel="icon" href="失控头像.jpg">
   <meta property="og:title" content="失控生日快乐">
-  <meta property="og:description" content="一份送给失控的生日礼物。">
-  <meta property="og:image" content="我做的卡通形象失控.png">
+  <meta property="og:description" content="一份专属生日祝福正在等你打开。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gongzhu666.github.io/shikong-birthday/">
+  <meta property="og:image" content="https://gongzhu666.github.io/shikong-birthday/share-card.png">
+  <meta property="og:image:secure_url" content="https://gongzhu666.github.io/shikong-birthday/share-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <link rel="image_src" href="https://gongzhu666.github.io/shikong-birthday/share-card.png">
+  <meta itemprop="name" content="失控生日快乐">
+  <meta itemprop="description" content="一份专属生日祝福正在等你打开。">
+  <meta itemprop="image" content="https://gongzhu666.github.io/shikong-birthday/share-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="失控生日快乐">
+  <meta name="twitter:description" content="一份专属生日祝福正在等你打开。">
+  <meta name="twitter:image" content="https://gongzhu666.github.io/shikong-birthday/share-card.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,24 +50,20 @@
     </header>
 
     <section class="scene scene-cover is-active" data-scene="0" aria-label="生日开场">
+      <div class="cover-visual" aria-hidden="true">
+        <img src="我做的卡通形象失控.png" alt="">
+      </div>
       <div class="phone-card cover-card">
         <p class="eyebrow">Happy Birthday</p>
         <h1><span>失控生日</span><span>快乐</span></h1>
         <p class="scene-copy">点一下，打开一份会唱歌、会翻页的生日礼物。</p>
         <button class="primary-action" type="button">开始生日礼物</button>
       </div>
-      <div class="gift-orbit" aria-hidden="true">
-        <span class="gift-box-shape">
-          <span class="gift-lid"></span>
-          <span class="gift-body"></span>
-          <span class="gift-ribbon-v"></span>
-          <span class="gift-ribbon-h"></span>
-        </span>
-      </div>
     </section>
 
     <section class="scene scene-avatar" data-scene="1" aria-label="头像祝福">
-      <div class="phone-card split-card">
+      <img class="scene-bg-art" src="我做的卡通形象失控.png" alt="" aria-hidden="true">
+      <div class="phone-card split-card center-copy">
         <div>
           <span class="gift-label">Gift 01</span>
           <h2>第一道祝福光</h2>
@@ -63,64 +75,74 @@
     </section>
 
     <section class="scene scene-character" data-scene="2" aria-label="生日卡通形象">
-      <div class="character-frame">
-        <img src="我做的卡通形象失控.png" alt="失控生日卡通形象">
-      </div>
-      <div class="phone-card caption-card">
-        <span class="gift-label">Gift 02</span>
-        <h2>专属生日主角</h2>
-        <p>蓝色缎带、金色星光和奶油味的愿望，都在今天为你亮起来。</p>
+      <div class="character-panel">
+        <div class="character-frame">
+          <img src="我做的卡通形象失控.png" alt="失控生日卡通形象">
+        </div>
+        <div class="caption-card character-caption">
+          <span class="gift-label">Gift 02</span>
+          <h2>专属生日主角</h2>
+          <p>蓝色缎带、金色星光和奶油味的愿望，都在今天为你亮起来。</p>
+        </div>
       </div>
       <button class="primary-action" type="button">继续翻页</button>
     </section>
 
     <section class="scene scene-photos" data-scene="3" aria-label="照片回忆">
       <div class="photo-stage">
-        <figure class="memory-photo photo-one">
+        <button class="memory-photo photo-one" type="button" data-preview-src="失控照片1.jpg" data-preview-alt="失控照片一">
           <img src="失控照片1.jpg" alt="失控照片一">
-          <figcaption>今天的光刚刚好</figcaption>
-        </figure>
-        <figure class="memory-photo photo-two">
+        </button>
+        <button class="memory-photo photo-two" type="button" data-preview-src="失控照片2.png" data-preview-alt="失控照片二">
           <img src="失控照片2.png" alt="失控照片二">
-          <figcaption>温柔也很耀眼</figcaption>
-        </figure>
-        <figure class="memory-photo photo-three">
+        </button>
+        <button class="memory-photo photo-three" type="button" data-preview-src="失控照片3.jpg" data-preview-alt="失控照片三">
           <img src="失控照片3.jpg" alt="失控照片三">
-          <figcaption>一路都要闪亮</figcaption>
-        </figure>
-        <figure class="memory-photo photo-four">
+        </button>
+        <button class="memory-photo photo-four" type="button" data-preview-src="失控照片4.jpg" data-preview-alt="失控照片四">
           <img src="失控照片4.jpg" alt="失控照片四">
-          <figcaption>生日快乐呀</figcaption>
-        </figure>
+        </button>
       </div>
-      <div class="phone-card caption-card">
+      <div class="phone-card caption-card center-copy">
         <span class="gift-label">Gift 03</span>
-        <h2>把喜欢的瞬间都收藏起来</h2>
+        <h2>把喜欢你的瞬间都收藏起来</h2>
       </div>
-      <button class="primary-action" type="button">打开愿望卡</button>
+      <button class="primary-action" type="button">打开一封信</button>
     </section>
 
-    <section class="scene scene-wish" data-scene="4" aria-label="生日愿望卡">
-      <div class="wish-paper">
-        <span class="gift-label">Gift 04</span>
-        <h2>愿所有美好，都如约奔向你</h2>
-        <p>
-          愿你被爱包围，未来闪闪发光，平安喜乐，万事胜意。
-          新的一岁，继续做自由、明亮、被珍惜的人。
-        </p>
-      </div>
+    <section class="scene scene-wish" data-scene="4" aria-label="写给失控的一封信">
+      <img class="scene-bg-art" src="我做的卡通形象失控.png" alt="" aria-hidden="true">
+      <article class="letter-paper">
+        <span class="gift-label">一封信</span>
+        <h2>致我的失控</h2>
+        <div class="letter-body">
+          <p>转眼和你认识快满一个月啦。我的爱播也是长大一岁了呢，生日快乐呀！平时我总爱跟你拌嘴、时不时怼你，说话也没个分寸，换作别人大概早就不耐了，可你一直格外迁就我，从来不会跟我置气。</p>
+          <p>不管我怎么调侃打趣你，你都好好接着，温和包容我的玩笑，不会冷脸也不会反驳回来。和你相处特别自在，不用拘谨克制，肆无忌惮开玩笑也不用担心你会介意。</p>
+          <p>直播时的你认真又温柔，私下待人更是贴心。短短二十多天，每次聊天都让我觉得舒服踏实，很庆幸能遇见愿意包容我性子的你。</p>
+          <p>愿你每场直播顺顺利利，每天都轻松愉快，永远被善意包围。我也会一直陪着你的。</p>
+        </div>
+      </article>
       <button class="primary-action" type="button">看最终祝福</button>
     </section>
 
     <section class="scene scene-finale" data-scene="5" aria-label="最终生日祝福">
-      <div class="finale-card">
+      <img class="scene-bg-art" src="我做的卡通形象失控.png" alt="" aria-hidden="true">
+      <div class="finale-card center-copy">
         <p class="eyebrow">Always be with you</p>
         <h2>失控生日快乐</h2>
-        <p>愿你往后的每一天，都有蓝天、金光、好消息和很多很多爱。</p>
+        <p>愿你我都能成为更好的自己</p>
         <button class="restart-action" type="button">重新播放</button>
       </div>
     </section>
   </main>
+
+  <div class="photo-lightbox" role="dialog" aria-modal="true" aria-label="照片预览" aria-hidden="true">
+    <button class="lightbox-backdrop" type="button" aria-label="关闭照片预览"></button>
+    <figure class="lightbox-panel">
+      <button class="lightbox-close" type="button" aria-label="关闭照片预览">×</button>
+      <img class="lightbox-image" alt="">
+    </figure>
+  </div>
 
   <script src="script.js"></script>
 </body>
