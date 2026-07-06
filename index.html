@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>失控生日快乐</title>
+  <meta name="description" content="一份送给失控的生日礼物。">
+  <meta property="og:title" content="失控生日快乐">
+  <meta property="og:description" content="一份送给失控的生日礼物。">
+  <meta property="og:image" content="我做的卡通形象失控.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scene-glow scene-glow-blue"></div>
+  <div class="scene-glow scene-glow-gold"></div>
+  <div class="particle-layer" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <section class="gift-stage" aria-label="失控生日礼物">
+      <div class="hero-copy">
+        <div class="profile-chip">
+          <img src="失控头像.jpg" alt="失控的微信头像">
+          <span>To 失控</span>
+        </div>
+        <p class="eyebrow">Happy Birthday</p>
+        <h1><span>失控生日</span><span>快乐</span></h1>
+        <p class="wish">一份藏着照片、星光和祝福的生日礼物。</p>
+      </div>
+
+      <div class="gift-console" aria-live="polite">
+        <div class="progress-panel">
+          <span class="progress-label">Gift Progress</span>
+          <div class="progress-track" aria-hidden="true">
+            <span class="progress-fill"></span>
+          </div>
+          <span class="progress-count">0 / 5</span>
+        </div>
+
+        <img class="gift-silhouette" src="我做的卡通形象失控.png" alt="">
+
+        <button class="gift-button" type="button" aria-label="开始拆礼物">
+          <span class="gift-box" aria-hidden="true">
+            <span class="gift-lid"></span>
+            <span class="gift-ribbon gift-ribbon-v"></span>
+            <span class="gift-ribbon gift-ribbon-h"></span>
+            <span class="gift-body"></span>
+          </span>
+          <span class="gift-button-text">开始拆礼物</span>
+        </button>
+
+        <p class="current-message">第一份礼物正在等你。</p>
+      </div>
+    </section>
+
+    <section class="unlock-board" aria-label="生日礼物解锁区">
+      <article class="unlock-item avatar-gift" data-step="1">
+        <div class="unlock-copy">
+          <span>Gift 01</span>
+          <h2>第一道祝福光</h2>
+          <p>愿你永远被真诚偏爱，也永远有向前走的底气。</p>
+        </div>
+        <img src="失控头像.jpg" alt="失控的微信头像">
+      </article>
+
+      <article class="unlock-item character-gift" data-step="2">
+        <div class="unlock-copy">
+          <span>Gift 02</span>
+          <h2>专属生日主角</h2>
+          <p>蓝色缎带和金色星光都在这一天，为你亮起来。</p>
+        </div>
+        <img src="我做的卡通形象失控.png" alt="失控生日卡通形象">
+      </article>
+
+      <article class="unlock-item photo-gift" data-step="3">
+        <div class="section-heading">
+          <span>Gift 03</span>
+          <h2>把喜欢的瞬间都收藏起来</h2>
+        </div>
+        <div class="photo-grid">
+          <figure class="photo-card">
+            <img src="失控照片1.jpg" alt="失控照片一">
+            <figcaption>今天的光刚刚好</figcaption>
+          </figure>
+          <figure class="photo-card">
+            <img src="失控照片2.png" alt="失控照片二">
+            <figcaption>温柔也很耀眼</figcaption>
+          </figure>
+          <figure class="photo-card">
+            <img src="失控照片3.jpg" alt="失控照片三">
+            <figcaption>一路都要闪亮</figcaption>
+          </figure>
+          <figure class="photo-card">
+            <img src="失控照片4.jpg" alt="失控照片四">
+            <figcaption>生日快乐呀</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="unlock-item wish-gift" data-step="4">
+        <div class="wish-card">
+          <span>Gift 04</span>
+          <h2>愿所有美好，都如约奔向你</h2>
+          <p>
+            愿你被爱包围，未来闪闪发光，平安喜乐，万事胜意。
+            新的一岁，继续做自由、明亮、被珍惜的人。
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <section class="finale" data-step="5" aria-label="最终生日祝福">
+      <div class="finale-inner">
+        <p class="eyebrow">Always be with you</p>
+        <h2>失控生日快乐</h2>
+        <p>这份礼物已经全部打开，愿你往后的每一天都有蓝天、金光和好消息。</p>
+        <button class="restart-button" type="button">重新拆一次</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
