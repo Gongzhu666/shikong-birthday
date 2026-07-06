@@ -1,69 +1,67 @@
-const totalSteps = 5;
-const storageKey = "shikong-birthday-progress";
-const messages = [
-  "第一份礼物正在等你。",
-  "头像祝福已点亮。",
-  "专属生日主角出现啦。",
-  "四个闪光瞬间已经解锁。",
-  "生日愿望卡已经送达。",
-  "全部礼物都打开了。"
+const scenes = [...document.querySelectorAll(".scene")];
+const dots = [...document.querySelectorAll(".dot")];
+const nextButtons = [...document.querySelectorAll(".primary-action")];
+const restartButton = document.querySelector(".restart-action");
+const musicToggle = document.querySelector(".music-toggle");
+const particleLayer = document.querySelector(".particle-layer");
+const transitionFlash = document.querySelector(".transition-flash");
+
+let currentScene = 0;
+let isTransitioning = false;
+let audioContext = null;
+let masterGain = null;
+let musicTimer = null;
+let musicStarted = false;
+let musicEnabled = false;
+
+const confettiColors = ["#70a9dc", "#3172b2", "#efb63e", "#ffe3a6", "#ffffff"];
+const melody = [
+  ["G4", 0.28], ["G4", 0.28], ["A4", 0.56], ["G4", 0.56], ["C5", 0.56], ["B4", 1.06],
+  ["G4", 0.28], ["G4", 0.28], ["A4", 0.56], ["G4", 0.56], ["D5", 0.56], ["C5", 1.06],
+  ["G4", 0.28], ["G4", 0.28], ["G5", 0.56], ["E5", 0.56], ["C5", 0.56], ["B4", 0.56], ["A4", 1.06],
+  ["F5", 0.28], ["F5", 0.28], ["E5", 0.56], ["C5", 0.56], ["D5", 0.56], ["C5", 1.22]
 ];
 
-const giftButton = document.querySelector(".gift-button");
-const giftButtonText = document.querySelector(".gift-button-text");
-const currentMessage = document.querySelector(".current-message");
-const progressFill = document.querySelector(".progress-fill");
-const progressCount = document.querySelector(".progress-count");
-const particleLayer = document.querySelector(".particle-layer");
-const unlockItems = document.querySelectorAll("[data-step]");
-const restartButton = document.querySelector(".restart-button");
+const noteMap = {
+  C4: 261.63,
+  D4: 293.66,
+  E4: 329.63,
+  F4: 349.23,
+  G4: 392,
+  A4: 440,
+  B4: 493.88,
+  C5: 523.25,
+  D5: 587.33,
+  E5: 659.25,
+  F5: 698.46,
+  G5: 783.99
+};
 
-let progress = readProgress();
-
-function readProgress() {
-  const stored = Number.parseInt(window.localStorage.getItem(storageKey) || "0", 10);
-  if (Number.isNaN(stored)) return 0;
-  return Math.min(Math.max(stored, 0), totalSteps);
+function updateViewportHeight() {
+  document.documentElement.style.setProperty("--vh", `${window.innerHeight}px`);
 }
 
-function writeProgress(value) {
-  progress = Math.min(Math.max(value, 0), totalSteps);
-  window.localStorage.setItem(storageKey, String(progress));
-  renderProgress();
-}
-
-function renderProgress() {
-  const percent = `${(progress / totalSteps) * 100}%`;
-  document.documentElement.style.setProperty("--progress", percent);
-  if (progressFill) progressFill.style.width = percent;
-  if (progressCount) progressCount.textContent = `${progress} / ${totalSteps}`;
-  if (currentMessage) currentMessage.textContent = messages[progress];
-
-  unlockItems.forEach((item) => {
-    const step = Number.parseInt(item.dataset.step || "0", 10);
-    item.classList.toggle("is-unlocked", step <= progress);
+function updateScenes() {
+  scenes.forEach((scene, index) => {
+    scene.classList.toggle("is-active", index === currentScene);
+    scene.classList.toggle("is-before", index < currentScene);
   });
-
-  if (giftButtonText) {
-    giftButtonText.textContent = progress >= totalSteps ? "礼物已全部打开" : `拆开第 ${progress + 1} 份礼物`;
-  }
-  if (giftButton) {
-    giftButton.setAttribute("aria-label", progress >= totalSteps ? "礼物已全部打开" : `拆开第 ${progress + 1} 份礼物`);
-  }
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("is-active", index === currentScene);
+  });
 }
 
 function createConfetti(x, y, intense = false) {
   if (!particleLayer) return;
 
-  const palette = ["#6fa8dc", "#3475b5", "#f0b83f", "#ffe0a2", "#ffffff"];
   const piece = document.createElement("span");
   const size = Math.round((intense ? 8 : 6) + Math.random() * (intense ? 14 : 10));
   const moveX = Math.round((Math.random() - 0.5) * (intense ? 420 : 260));
-  const moveY = Math.round(-130 - Math.random() * (intense ? 340 : 220));
+  const moveY = Math.round(-120 - Math.random() * (intense ? 340 : 220));
   const duration = Math.round(900 + Math.random() * (intense ? 1050 : 700));
   const spin = `${Math.round((Math.random() - 0.5) * 720)}deg`;
 
-  piece.className = `confetti${Math.random() > 0.78 ? " is-star" : ""}`;
+  piece.className = `confetti${Math.random() > 0.76 ? " is-star" : ""}`;
   piece.style.setProperty("--start-x", `${x}px`);
   piece.style.setProperty("--start-y", `${y}px`);
   piece.style.setProperty("--move-x", `${moveX}px`);
@@ -71,76 +69,201 @@ function createConfetti(x, y, intense = false) {
   piece.style.setProperty("--size", `${size}px`);
   piece.style.setProperty("--duration", `${duration}ms`);
   piece.style.setProperty("--spin", spin);
-  piece.style.setProperty("--color", palette[Math.floor(Math.random() * palette.length)]);
+  piece.style.setProperty("--color", confettiColors[Math.floor(Math.random() * confettiColors.length)]);
 
   particleLayer.appendChild(piece);
   window.setTimeout(() => piece.remove(), duration + 120);
 }
 
-function burstFrom(element, count = 42, intense = false) {
+function burstFrom(element, count = 44, intense = false) {
   const rect = element.getBoundingClientRect();
   const baseX = rect.left + rect.width / 2;
-  const baseY = rect.top + rect.height * 0.42;
+  const baseY = rect.top + rect.height * 0.45;
 
   for (let i = 0; i < count; i += 1) {
     window.setTimeout(() => {
       createConfetti(
-        baseX + (Math.random() - 0.5) * rect.width * 0.7,
-        baseY + (Math.random() - 0.5) * rect.height * 0.25,
+        baseX + (Math.random() - 0.5) * rect.width * 0.8,
+        baseY + (Math.random() - 0.5) * rect.height * 0.35,
         intense
       );
     }, i * 13);
   }
 }
 
-function scrollToUnlockedStep(step) {
-  const selector = step === totalSteps ? ".finale" : `[data-step="${step}"]`;
-  const target = document.querySelector(selector);
-  if (!target) return;
-
-  window.setTimeout(() => {
-    target.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, 360);
+function flashTransition() {
+  if (!transitionFlash) return;
+  transitionFlash.classList.remove("is-flashing");
+  void transitionFlash.offsetWidth;
+  transitionFlash.classList.add("is-flashing");
 }
 
-function openGift() {
-  if (!giftButton) return;
+function goToScene(nextScene, sourceElement) {
+  if (isTransitioning) return;
 
-  const nextStep = progress >= totalSteps ? totalSteps : progress + 1;
-  giftButton.classList.remove("is-opening");
-  void giftButton.offsetWidth;
-  giftButton.classList.add("is-opening");
-  burstFrom(giftButton, nextStep === totalSteps ? 88 : 48, nextStep === totalSteps);
+  const clamped = Math.min(Math.max(nextScene, 0), scenes.length - 1);
+  if (clamped === currentScene) return;
+
+  isTransitioning = true;
+  if (sourceElement) burstFrom(sourceElement, clamped === scenes.length - 1 ? 90 : 48, clamped === scenes.length - 1);
+  flashTransition();
 
   window.setTimeout(() => {
-    giftButton.classList.remove("is-opening");
-  }, 820);
+    currentScene = clamped;
+    updateScenes();
+  }, 150);
 
-  if (progress < totalSteps) {
-    writeProgress(nextStep);
-    scrollToUnlockedStep(nextStep);
-  } else {
-    scrollToUnlockedStep(totalSteps);
+  window.setTimeout(() => {
+    isTransitioning = false;
+  }, 820);
+}
+
+function setupAudio() {
+  if (audioContext) return;
+
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    if (musicToggle) {
+      musicToggle.textContent = "×";
+      musicToggle.setAttribute("aria-label", "当前浏览器不支持背景音乐");
+    }
+    return;
+  }
+
+  audioContext = new AudioContextClass();
+  masterGain = audioContext.createGain();
+  masterGain.gain.value = 0.16;
+  masterGain.connect(audioContext.destination);
+}
+
+function playTone(note, startTime, duration) {
+  if (!audioContext || !masterGain) return;
+
+  const frequency = noteMap[note];
+  if (!frequency) return;
+
+  const osc = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  const shimmer = audioContext.createOscillator();
+  const shimmerGain = audioContext.createGain();
+
+  osc.type = "sine";
+  osc.frequency.value = frequency;
+  shimmer.type = "triangle";
+  shimmer.frequency.value = frequency * 2;
+
+  gain.gain.setValueAtTime(0.0001, startTime);
+  gain.gain.exponentialRampToValueAtTime(0.32, startTime + 0.025);
+  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + Math.max(0.08, duration * 0.82));
+
+  shimmerGain.gain.setValueAtTime(0.0001, startTime);
+  shimmerGain.gain.exponentialRampToValueAtTime(0.06, startTime + 0.018);
+  shimmerGain.gain.exponentialRampToValueAtTime(0.0001, startTime + Math.max(0.08, duration * 0.58));
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  shimmer.connect(shimmerGain);
+  shimmerGain.connect(masterGain);
+
+  osc.start(startTime);
+  shimmer.start(startTime);
+  osc.stop(startTime + duration);
+  shimmer.stop(startTime + duration);
+}
+
+function scheduleMelody() {
+  if (!audioContext || !musicEnabled) return;
+
+  let cursor = audioContext.currentTime + 0.06;
+  melody.forEach(([note, duration]) => {
+    playTone(note, cursor, duration);
+    cursor += duration;
+  });
+  musicTimer = window.setTimeout(scheduleMelody, Math.max(1000, (cursor - audioContext.currentTime - 0.12) * 1000));
+}
+
+async function startMusic() {
+  setupAudio();
+  if (!audioContext) return;
+
+  if (audioContext.state === "suspended") {
+    await audioContext.resume();
+  }
+
+  if (musicEnabled) return;
+  musicEnabled = true;
+  musicStarted = true;
+  if (masterGain) {
+    masterGain.gain.cancelScheduledValues(audioContext.currentTime);
+    masterGain.gain.setTargetAtTime(0.16, audioContext.currentTime, 0.04);
+  }
+  if (musicToggle) {
+    musicToggle.classList.add("is-playing");
+    musicToggle.textContent = "♫";
+    musicToggle.setAttribute("aria-label", "暂停背景音乐");
+  }
+  scheduleMelody();
+}
+
+async function toggleMusic() {
+  setupAudio();
+  if (!audioContext) return;
+
+  if (!musicEnabled) {
+    await startMusic();
+    return;
+  }
+
+  musicEnabled = false;
+  if (musicTimer) {
+    window.clearTimeout(musicTimer);
+    musicTimer = null;
+  }
+  if (masterGain) {
+    masterGain.gain.cancelScheduledValues(audioContext.currentTime);
+    masterGain.gain.setTargetAtTime(0.0001, audioContext.currentTime, 0.04);
+  }
+  if (musicToggle) {
+    musicToggle.classList.remove("is-playing");
+    musicToggle.textContent = "♪";
+    musicToggle.setAttribute("aria-label", "开启背景音乐");
   }
 }
 
-function restartExperience() {
-  writeProgress(0);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  if (giftButton) burstFrom(giftButton, 36, false);
-}
-
-if (giftButton) {
-  giftButton.addEventListener("click", openGift);
-}
+nextButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!musicStarted) {
+      startMusic().catch(() => {
+        if (musicToggle) {
+          musicToggle.textContent = "♪";
+          musicToggle.setAttribute("aria-label", "开启背景音乐");
+        }
+      });
+    }
+    goToScene(currentScene + 1, button);
+  });
+});
 
 if (restartButton) {
-  restartButton.addEventListener("click", restartExperience);
+  restartButton.addEventListener("click", () => {
+    goToScene(0, restartButton);
+  });
 }
 
+if (musicToggle) {
+  musicToggle.addEventListener("click", toggleMusic);
+}
+
+window.addEventListener("resize", updateViewportHeight);
+window.addEventListener("orientationchange", () => {
+  window.setTimeout(updateViewportHeight, 250);
+});
+
 window.addEventListener("load", () => {
-  renderProgress();
-  if (giftButton) {
-    window.setTimeout(() => burstFrom(giftButton, 20, false), 360);
+  updateViewportHeight();
+  updateScenes();
+  const activeAction = scenes[0]?.querySelector(".primary-action");
+  if (activeAction) {
+    window.setTimeout(() => burstFrom(activeAction, 22, false), 420);
   }
 });
