@@ -192,6 +192,7 @@ button {
 .scene {
   position: absolute;
   inset: 0;
+  isolation: isolate;
   display: grid;
   align-content: center;
   justify-items: center;
@@ -206,6 +207,32 @@ button {
     transform 760ms cubic-bezier(0.2, 0.8, 0.2, 1),
     opacity 520ms ease,
     visibility 520ms ease;
+  overflow: hidden;
+}
+
+.scene-art-board::before,
+.scene-art-board::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.scene-art-board::before {
+  z-index: -2;
+  background-image: url("我做的卡通形象失控.png");
+  background-position: center 44%;
+  background-size: cover;
+  opacity: 0.42;
+  filter: saturate(0.92) brightness(1.04);
+  transform: scale(1.02);
+}
+
+.scene-art-board::after {
+  z-index: -1;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.68) 42%, rgba(255, 249, 234, 0.84) 100%),
+    linear-gradient(90deg, rgba(231, 243, 255, 0.58), rgba(255, 255, 255, 0.5) 45%, rgba(255, 235, 178, 0.58));
 }
 
 .scene.is-active {
@@ -247,6 +274,7 @@ button {
 }
 
 .cover-card {
+  width: min(100%, 31rem);
   padding: clamp(1.55rem, 5vw, 2.4rem);
   text-align: center;
 }
@@ -278,9 +306,9 @@ p {
 h1 {
   margin: 0;
   color: var(--blue-deep);
-  font-size: clamp(3.7rem, 15vw, 6.7rem);
+  font-size: clamp(2.85rem, 8vw, 4.8rem);
   font-weight: 900;
-  line-height: 0.95;
+  line-height: 1.02;
   letter-spacing: 0;
   text-shadow: 0 12px 32px rgba(49, 114, 178, 0.16);
 }
@@ -306,39 +334,6 @@ p {
 
 .scene-copy {
   margin: 1rem 0 0;
-}
-
-.cover-visual {
-  width: min(74vw, 21rem);
-  max-height: min(48vh, 28rem);
-  border: 1px solid rgba(255, 255, 255, 0.76);
-  border-radius: 1.35rem;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.64), rgba(255, 246, 224, 0.46)),
-    radial-gradient(circle at 72% 18%, rgba(239, 182, 62, 0.24), transparent 12rem);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-
-.cover-visual img {
-  width: 100%;
-  max-height: min(48vh, 28rem);
-  object-fit: cover;
-  object-position: center;
-}
-
-.scene-bg-art {
-  position: absolute;
-  right: min(-6vw, -1.2rem);
-  bottom: min(-8vh, -1.5rem);
-  z-index: -1;
-  width: min(62vw, 22rem);
-  max-height: 70vh;
-  border-radius: 1.2rem;
-  object-fit: cover;
-  opacity: 0.13;
-  filter: blur(0.5px) saturate(0.85);
-  pointer-events: none;
 }
 
 .primary-action,
@@ -399,46 +394,12 @@ p {
   box-shadow: 0 20px 44px rgba(63, 92, 132, 0.18);
 }
 
-.character-frame {
-  width: min(74vw, 22rem);
-  max-height: min(58vh, 34rem);
-  border: 1px solid rgba(255, 255, 255, 0.76);
-  border-radius: 1.25rem;
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-
-.character-panel {
-  display: grid;
-  justify-items: center;
-  gap: clamp(0.8rem, 2.2vh, 1.2rem);
-  width: min(100%, 34rem);
-  padding: clamp(0.8rem, 2.6vw, 1.2rem);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 1.45rem;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.56), rgba(255, 246, 224, 0.4)),
-    radial-gradient(circle at 22% 16%, rgba(112, 169, 220, 0.18), transparent 12rem);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(12px);
-}
-
-.character-frame img {
-  width: 100%;
-  height: 100%;
-  max-height: min(58vh, 34rem);
-  object-fit: contain;
-}
-
 .caption-card {
   padding: clamp(1.1rem, 4vw, 1.6rem);
 }
 
 .character-caption {
-  width: min(100%, 30rem);
-  box-shadow: none;
-  background: rgba(255, 255, 255, 0.66);
+  width: min(100%, 32rem);
 }
 
 .photo-stage {
@@ -542,9 +503,6 @@ p {
 }
 
 .scene.is-active .phone-card,
-.scene.is-active .cover-visual,
-.scene.is-active .character-panel,
-.scene.is-active .character-frame,
 .scene.is-active .caption-card,
 .scene.is-active .letter-paper,
 .scene.is-active .finale-card {
@@ -710,11 +668,6 @@ p {
   .scene {
     padding-inline: max(2.2rem, calc((100vw - 780px) / 2));
   }
-
-  .scene-cover {
-    grid-template-columns: minmax(18rem, 0.92fr) minmax(16rem, 0.72fr);
-    gap: 3rem;
-  }
 }
 
 @media (max-width: 520px) {
@@ -799,24 +752,6 @@ p {
   p {
     font-size: 0.92rem;
     line-height: 1.65;
-  }
-
-  .cover-visual {
-    width: min(52vw, 14rem);
-    max-height: 34vh;
-  }
-
-  .cover-visual img {
-    max-height: 34vh;
-  }
-
-  .character-frame {
-    width: min(55vw, 17rem);
-    max-height: 42vh;
-  }
-
-  .character-frame img {
-    max-height: 42vh;
   }
 
   .photo-stage {
