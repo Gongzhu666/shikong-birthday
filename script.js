@@ -11,7 +11,7 @@ const lightboxImage = document.querySelector(".lightbox-image");
 const lightboxCloseButtons = document.querySelectorAll(".lightbox-close, .lightbox-backdrop");
 
 const birthdayAudio = document.createElement("audio");
-birthdayAudio.src = "生日快乐.mp3";
+birthdayAudio.src = "生日快乐.mp3?v=tail-trim-20260707";
 birthdayAudio.loop = true;
 birthdayAudio.preload = "auto";
 birthdayAudio.volume = 0.58;
