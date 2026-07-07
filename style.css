@@ -523,14 +523,6 @@ p {
   line-height: 1.12;
 }
 
-.clear-title-glyph {
-  display: inline-block;
-  color: inherit;
-  font-family: "KaiTi", "STKaiti", "Microsoft YaHei UI", "PingFang SC", sans-serif;
-  font-weight: 900;
-  transform: translateY(-0.02em);
-}
-
 .character-caption {
   width: min(100%, 32rem);
 }
