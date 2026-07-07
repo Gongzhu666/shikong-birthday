@@ -9,7 +9,7 @@
   --paper: rgba(255, 255, 255, 0.82);
   --line: rgba(75, 123, 176, 0.22);
   --shadow: 0 28px 80px rgba(63, 92, 132, 0.22);
-  --title-font: "FangSong", "仿宋", "KaiTi", "Kaiti SC", "STKaiti", "PingFang SC", serif;
+  --title-font: "Microsoft YaHei UI", "HarmonyOS Sans SC", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
   --vh: 100vh;
 }
 
@@ -387,15 +387,15 @@ h2 {
 }
 
 .display-title {
-  color: #3572ab;
+  color: #2f70ad;
   font-family: var(--title-font);
   font-size: clamp(1.9rem, 5.4vw, 3.45rem);
-  font-weight: 520;
-  line-height: 1.16;
+  font-weight: 650;
+  line-height: 1.18;
   text-wrap: balance;
   text-shadow:
-    0 0.08rem 0 rgba(255, 255, 255, 0.68),
-    0 0.62rem 1.45rem rgba(49, 114, 178, 0.12);
+    0 0.07rem 0 rgba(255, 255, 255, 0.72),
+    0 0.7rem 1.45rem rgba(49, 114, 178, 0.14);
 }
 
 p {
@@ -652,7 +652,7 @@ p {
 
 .finale-card .display-title {
   font-family: var(--title-font);
-  font-weight: 520;
+  font-weight: 650;
   line-height: 1.12;
   text-shadow:
     0 0.08rem 0 rgba(255, 255, 255, 0.78),

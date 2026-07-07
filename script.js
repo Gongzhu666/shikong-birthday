@@ -10,36 +10,25 @@ const lightbox = document.querySelector(".photo-lightbox");
 const lightboxImage = document.querySelector(".lightbox-image");
 const lightboxCloseButtons = document.querySelectorAll(".lightbox-close, .lightbox-backdrop");
 
+const birthdayAudio = document.createElement("audio");
+birthdayAudio.src = "生日快乐.mp3";
+birthdayAudio.loop = true;
+birthdayAudio.preload = "auto";
+birthdayAudio.volume = 0.58;
+birthdayAudio.className = "birthday-audio";
+birthdayAudio.setAttribute("playsinline", "");
+birthdayAudio.setAttribute("aria-hidden", "true");
+birthdayAudio.style.display = "none";
+document.body.appendChild(birthdayAudio);
+window.birthdayAudio = birthdayAudio;
+window.birthdayAudioState = { lastError: "" };
+
 let currentScene = 0;
 let isTransitioning = false;
-let audioContext = null;
-let masterGain = null;
-let musicTimer = null;
 let musicStarted = false;
 let musicEnabled = false;
 
 const confettiColors = ["#70a9dc", "#3172b2", "#efb63e", "#ffe3a6", "#ffffff"];
-const melody = [
-  ["G4", 0.28], ["G4", 0.28], ["A4", 0.56], ["G4", 0.56], ["C5", 0.56], ["B4", 1.06],
-  ["G4", 0.28], ["G4", 0.28], ["A4", 0.56], ["G4", 0.56], ["D5", 0.56], ["C5", 1.06],
-  ["G4", 0.28], ["G4", 0.28], ["G5", 0.56], ["E5", 0.56], ["C5", 0.56], ["B4", 0.56], ["A4", 1.06],
-  ["F5", 0.28], ["F5", 0.28], ["E5", 0.56], ["C5", 0.56], ["D5", 0.56], ["C5", 1.22]
-];
-
-const noteMap = {
-  C4: 261.63,
-  D4: 293.66,
-  E4: 329.63,
-  F4: 349.23,
-  G4: 392,
-  A4: 440,
-  B4: 493.88,
-  C5: 523.25,
-  D5: 587.33,
-  E5: 659.25,
-  F5: 698.46,
-  G5: 783.99
-};
 
 function updateViewportHeight() {
   document.documentElement.style.setProperty("--vh", `${window.innerHeight}px`);
@@ -148,126 +137,59 @@ function closeLightbox() {
   }, 240);
 }
 
-function setupAudio() {
-  if (audioContext) return;
+function setMusicButton(isPlaying) {
+  if (!musicToggle) return;
 
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass) {
-    if (musicToggle) {
-      musicToggle.textContent = "×";
-      musicToggle.setAttribute("aria-label", "当前浏览器不支持背景音乐");
-    }
-    return;
-  }
-
-  audioContext = new AudioContextClass();
-  masterGain = audioContext.createGain();
-  masterGain.gain.value = 0.16;
-  masterGain.connect(audioContext.destination);
-}
-
-function playTone(note, startTime, duration) {
-  if (!audioContext || !masterGain) return;
-
-  const frequency = noteMap[note];
-  if (!frequency) return;
-
-  const osc = audioContext.createOscillator();
-  const gain = audioContext.createGain();
-  const shimmer = audioContext.createOscillator();
-  const shimmerGain = audioContext.createGain();
-
-  osc.type = "sine";
-  osc.frequency.value = frequency;
-  shimmer.type = "triangle";
-  shimmer.frequency.value = frequency * 2;
-
-  gain.gain.setValueAtTime(0.0001, startTime);
-  gain.gain.exponentialRampToValueAtTime(0.32, startTime + 0.025);
-  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + Math.max(0.08, duration * 0.82));
-
-  shimmerGain.gain.setValueAtTime(0.0001, startTime);
-  shimmerGain.gain.exponentialRampToValueAtTime(0.06, startTime + 0.018);
-  shimmerGain.gain.exponentialRampToValueAtTime(0.0001, startTime + Math.max(0.08, duration * 0.58));
-
-  osc.connect(gain);
-  gain.connect(masterGain);
-  shimmer.connect(shimmerGain);
-  shimmerGain.connect(masterGain);
-
-  osc.start(startTime);
-  shimmer.start(startTime);
-  osc.stop(startTime + duration);
-  shimmer.stop(startTime + duration);
-}
-
-function scheduleMelody() {
-  if (!audioContext || !musicEnabled) return;
-
-  let cursor = audioContext.currentTime + 0.06;
-  melody.forEach(([note, duration]) => {
-    playTone(note, cursor, duration);
-    cursor += duration;
-  });
-  musicTimer = window.setTimeout(scheduleMelody, Math.max(1000, (cursor - audioContext.currentTime - 0.12) * 1000));
+  musicToggle.classList.toggle("is-playing", isPlaying);
+  musicToggle.textContent = isPlaying ? "♫" : "♪";
+  musicToggle.setAttribute("aria-label", isPlaying ? "暂停背景音乐" : "开启背景音乐");
 }
 
 async function startMusic() {
-  setupAudio();
-  if (!audioContext) return;
-
-  if (audioContext.state === "suspended") {
-    await audioContext.resume();
-  }
-
   if (musicEnabled) return;
-  musicEnabled = true;
+
+  if (!musicStarted) {
+    birthdayAudio.currentTime = 0;
+  }
+
+  birthdayAudio.dataset.playAttempted = "true";
   musicStarted = true;
-  if (masterGain) {
-    masterGain.gain.cancelScheduledValues(audioContext.currentTime);
-    masterGain.gain.setTargetAtTime(0.16, audioContext.currentTime, 0.04);
+  musicEnabled = true;
+  setMusicButton(true);
+
+  try {
+    await birthdayAudio.play();
+    birthdayAudio.dataset.lastError = "";
+    window.birthdayAudioState.lastError = "";
+  } catch (error) {
+    const message = error?.message || String(error);
+    birthdayAudio.dataset.lastError = message;
+    window.birthdayAudioState.lastError = message;
+    musicEnabled = false;
+    musicStarted = false;
+    setMusicButton(false);
+    throw error;
   }
-  if (musicToggle) {
-    musicToggle.classList.add("is-playing");
-    musicToggle.textContent = "♫";
-    musicToggle.setAttribute("aria-label", "暂停背景音乐");
-  }
-  scheduleMelody();
 }
 
 async function toggleMusic() {
-  setupAudio();
-  if (!audioContext) return;
-
   if (!musicEnabled) {
     await startMusic();
     return;
   }
 
+  birthdayAudio.pause();
   musicEnabled = false;
-  if (musicTimer) {
-    window.clearTimeout(musicTimer);
-    musicTimer = null;
-  }
-  if (masterGain) {
-    masterGain.gain.cancelScheduledValues(audioContext.currentTime);
-    masterGain.gain.setTargetAtTime(0.0001, audioContext.currentTime, 0.04);
-  }
-  if (musicToggle) {
-    musicToggle.classList.remove("is-playing");
-    musicToggle.textContent = "♪";
-    musicToggle.setAttribute("aria-label", "开启背景音乐");
-  }
+  setMusicButton(false);
 }
 
 nextButtons.forEach((button) => {
   button.addEventListener("click", () => {
     if (!musicStarted) {
       startMusic().catch(() => {
-        if (musicToggle) {
-          musicToggle.textContent = "♪";
-          musicToggle.setAttribute("aria-label", "开启背景音乐");
-        }
+        musicStarted = false;
+        musicEnabled = false;
+        setMusicButton(false);
       });
     }
     goToScene(currentScene + 1, button);
@@ -281,8 +203,22 @@ if (restartButton) {
 }
 
 if (musicToggle) {
-  musicToggle.addEventListener("click", toggleMusic);
+  musicToggle.addEventListener("click", () => {
+    toggleMusic().catch(() => setMusicButton(false));
+  });
 }
+
+birthdayAudio.addEventListener("pause", () => {
+  if (birthdayAudio.ended) return;
+  musicEnabled = false;
+  setMusicButton(false);
+});
+
+birthdayAudio.addEventListener("play", () => {
+  musicStarted = true;
+  musicEnabled = true;
+  setMusicButton(true);
+});
 
 photoButtons.forEach((button) => {
   button.addEventListener("click", () => openLightbox(button));
@@ -306,6 +242,7 @@ window.addEventListener("orientationchange", () => {
 window.addEventListener("load", () => {
   updateViewportHeight();
   updateScenes();
+  setMusicButton(false);
   const activeAction = scenes[0]?.querySelector(".primary-action");
   if (activeAction) {
     window.setTimeout(() => burstFrom(activeAction, 22, false), 420);
