@@ -50,6 +50,18 @@ img {
   max-width: 100%;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
 button {
   font: inherit;
 }
@@ -235,6 +247,18 @@ button {
     linear-gradient(90deg, rgba(231, 243, 255, 0.58), rgba(255, 255, 255, 0.5) 45%, rgba(255, 235, 178, 0.58));
 }
 
+.scene-cover.scene-art-board::before {
+  background-position: center 46%;
+  opacity: 0.96;
+  filter: saturate(1.04) contrast(1.01);
+}
+
+.scene-cover.scene-art-board::after {
+  background:
+    radial-gradient(circle at 50% 54%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.14) 46%, rgba(255, 247, 224, 0.24) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04) 42%, rgba(255, 248, 230, 0.18));
+}
+
 .scene.is-active {
   opacity: 1;
   visibility: visible;
@@ -322,8 +346,11 @@ h2 {
   margin: 0;
   color: var(--ink);
   font-size: clamp(1.8rem, 7vw, 3rem);
+  font-family: "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  font-weight: 760;
   line-height: 1.18;
   letter-spacing: 0;
+  text-shadow: 0 10px 26px rgba(35, 48, 71, 0.08);
 }
 
 p {
@@ -334,6 +361,21 @@ p {
 
 .scene-copy {
   margin: 1rem 0 0;
+}
+
+.primary-action.cover-action {
+  position: absolute;
+  right: auto;
+  bottom: clamp(4.6rem, 12vh, 8rem);
+  left: 50%;
+  min-width: 9.2rem;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(135deg, rgba(49, 114, 178, 0.94), rgba(112, 169, 220, 0.92) 48%, rgba(239, 182, 62, 0.92)),
+    rgba(255, 255, 255, 0.34);
+  box-shadow:
+    0 20px 48px rgba(49, 114, 178, 0.28),
+    0 0 0 0.42rem rgba(255, 255, 255, 0.28);
 }
 
 .primary-action,
@@ -362,6 +404,10 @@ p {
   transform: scale(0.97);
 }
 
+.primary-action.cover-action:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
 .split-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(7.8rem, 0.48fr);
@@ -379,6 +425,7 @@ p {
 
 .split-card p,
 .caption-card p,
+.companion-card p,
 .wish-paper p,
 .finale-card p {
   margin: 0.9rem 0 0;
@@ -400,6 +447,51 @@ p {
 
 .character-caption {
   width: min(100%, 32rem);
+}
+
+.companion-card {
+  display: grid;
+  justify-items: center;
+  gap: clamp(0.85rem, 2.6vh, 1.3rem);
+  width: min(100%, 33rem);
+  padding: clamp(1.35rem, 4.6vw, 2.25rem);
+}
+
+.avatar-pair {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, clamp(5.6rem, 16vw, 8.4rem));
+  justify-content: center;
+  align-items: center;
+  width: min(100%, 18rem);
+  min-height: clamp(6.4rem, 18vw, 9.4rem);
+}
+
+.pair-avatar {
+  width: clamp(5.6rem, 16vw, 8.4rem);
+  aspect-ratio: 1;
+  border: 0.42rem solid rgba(255, 255, 255, 0.82);
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 22px 52px rgba(63, 92, 132, 0.2);
+}
+
+.pair-avatar-main {
+  justify-self: end;
+  transform: translateX(0.55rem) rotate(-4deg);
+}
+
+.pair-avatar-princess {
+  justify-self: start;
+  transform: translateX(-0.55rem) rotate(4deg);
+}
+
+.companion-card p {
+  max-width: 22rem;
+  color: #40516e;
+  font-size: clamp(1.05rem, 3.8vw, 1.32rem);
+  font-weight: 760;
+  line-height: 1.65;
 }
 
 .photo-stage {
@@ -494,8 +586,10 @@ p {
 
 .finale-card h2 {
   color: var(--blue-deep);
-  font-size: clamp(2.4rem, 10vw, 4.8rem);
-  line-height: 1;
+  font-size: clamp(2rem, 7vw, 3.85rem);
+  font-weight: 760;
+  line-height: 1.12;
+  text-shadow: 0 12px 30px rgba(49, 114, 178, 0.16);
 }
 
 .restart-action {

@@ -50,12 +50,8 @@
     </header>
 
     <section class="scene scene-cover scene-art-board is-active" data-scene="0" aria-label="生日开场">
-      <div class="phone-card cover-card">
-        <p class="eyebrow">Happy Birthday</p>
-        <h1><span>失控生日</span><span>快乐</span></h1>
-        <p class="scene-copy">点一下，打开一份会唱歌、会翻页的生日礼物。</p>
-        <button class="primary-action" type="button">开始生日礼物</button>
-      </div>
+      <h1 class="sr-only">失控生日快乐</h1>
+      <button class="primary-action cover-action" type="button">开启礼物</button>
     </section>
 
     <section class="scene scene-avatar scene-art-board" data-scene="1" aria-label="头像祝福">
@@ -70,16 +66,19 @@
       <button class="primary-action" type="button">收下这份祝福</button>
     </section>
 
-    <section class="scene scene-character scene-art-board" data-scene="2" aria-label="生日卡通形象">
-      <div class="phone-card caption-card character-caption">
+    <section class="scene scene-character scene-art-board" data-scene="2" aria-label="双头像生日陪伴">
+      <div class="phone-card companion-card center-copy">
         <span class="gift-label">Gift 02</span>
-        <h2>专属生日主角</h2>
-        <p>蓝色缎带、金色星光和奶油味的愿望，都在今天为你亮起来。</p>
+        <div class="avatar-pair" aria-label="失控和小公主的微信头像">
+          <img class="pair-avatar pair-avatar-main" src="失控头像.jpg" alt="失控的微信头像">
+          <img class="pair-avatar pair-avatar-princess" src="小公主头像.jpg" alt="小公主的微信头像">
+        </div>
+        <p>不出意外的话~未来你的每一个生日我都在！</p>
       </div>
       <button class="primary-action" type="button">继续翻页</button>
     </section>
 
-    <section class="scene scene-photos" data-scene="3" aria-label="照片回忆">
+    <section class="scene scene-photos scene-art-board" data-scene="3" aria-label="照片回忆">
       <div class="photo-stage">
         <button class="memory-photo photo-one" type="button" data-preview-src="失控照片1.jpg" data-preview-alt="失控照片一">
           <img src="失控照片1.jpg" alt="失控照片一">
