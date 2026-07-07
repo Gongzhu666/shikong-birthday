@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "BirthdayHand";
+  src: url("fonts/birthday-hand-chinese.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
 :root {
   --ink: #233047;
   --muted: #6b7890;
@@ -9,7 +17,7 @@
   --paper: rgba(255, 255, 255, 0.82);
   --line: rgba(75, 123, 176, 0.22);
   --shadow: 0 28px 80px rgba(63, 92, 132, 0.22);
-  --title-font: "Microsoft YaHei UI", "HarmonyOS Sans SC", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --title-font: "BirthdayHand", "Ma Shan Zheng", "STXingkai", "KaiTi", "Microsoft YaHei UI", "PingFang SC", sans-serif;
   --vh: 100vh;
 }
 
@@ -390,11 +398,13 @@ h2 {
   color: #2f70ad;
   font-family: var(--title-font);
   font-size: clamp(1.9rem, 5.4vw, 3.45rem);
-  font-weight: 650;
-  line-height: 1.18;
+  font-weight: 900;
+  line-height: 1.15;
   text-wrap: balance;
+  -webkit-text-stroke: 0.014em rgba(47, 112, 173, 0.38);
+  paint-order: stroke fill;
   text-shadow:
-    0 0.07rem 0 rgba(255, 255, 255, 0.72),
+    0 0.08rem 0 rgba(255, 255, 255, 0.84),
     0 0.7rem 1.45rem rgba(49, 114, 178, 0.14);
 }
 
@@ -492,11 +502,13 @@ p {
 }
 
 .caption-card {
+  width: min(100%, 40rem);
   padding: clamp(1.1rem, 4vw, 1.6rem);
 }
 
 .caption-card .display-title {
-  font-size: clamp(1.78rem, 5.6vw, 3.35rem);
+  font-size: clamp(1.55rem, 4.2vw, 3rem);
+  line-height: 1.12;
 }
 
 .character-caption {
@@ -652,11 +664,13 @@ p {
 
 .finale-card .display-title {
   font-family: var(--title-font);
-  font-weight: 650;
+  font-weight: 900;
   line-height: 1.12;
+  -webkit-text-stroke: 0.014em rgba(47, 112, 173, 0.38);
+  paint-order: stroke fill;
   text-shadow:
-    0 0.08rem 0 rgba(255, 255, 255, 0.78),
-    0 0.75rem 1.7rem rgba(49, 114, 178, 0.14);
+    0 0.08rem 0 rgba(255, 255, 255, 0.82),
+    0 0.78rem 1.65rem rgba(49, 114, 178, 0.15);
 }
 
 .restart-action {
