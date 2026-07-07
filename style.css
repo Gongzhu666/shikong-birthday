@@ -9,7 +9,7 @@
   --paper: rgba(255, 255, 255, 0.82);
   --line: rgba(75, 123, 176, 0.22);
   --shadow: 0 28px 80px rgba(63, 92, 132, 0.22);
-  --title-font: "STXingkai", "华文行楷", "KaiTi", "Kaiti SC", "FangSong", "PingFang SC", serif;
+  --title-font: "FangSong", "仿宋", "KaiTi", "Kaiti SC", "STKaiti", "PingFang SC", serif;
   --vh: 100vh;
 }
 
@@ -305,16 +305,15 @@ button {
 .letter-paper::after,
 .finale-card::after {
   position: absolute;
-  right: clamp(-4.8rem, -8vw, -2.2rem);
-  bottom: clamp(-7.2rem, -12vw, -3.6rem);
+  inset: 0;
   z-index: 0;
-  width: clamp(13rem, 34vw, 22rem);
-  aspect-ratio: 1086 / 1448;
-  border-radius: 1.1rem;
-  background: url("我做的卡通形象失控.png") center / cover no-repeat;
+  border-radius: inherit;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.62), rgba(255, 247, 225, 0.38)),
+    url("我做的卡通形象失控.png") center 42% / cover no-repeat;
   content: "";
-  opacity: 0.105;
-  filter: saturate(0.9);
+  opacity: 0.16;
+  filter: saturate(0.96) contrast(0.98);
   pointer-events: none;
 }
 
@@ -381,22 +380,22 @@ h2 {
   color: var(--ink);
   font-size: clamp(1.8rem, 7vw, 3rem);
   font-family: "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  font-weight: 760;
+  font-weight: 680;
   line-height: 1.18;
   letter-spacing: 0;
-  text-shadow: 0 10px 26px rgba(35, 48, 71, 0.08);
+  text-shadow: 0 8px 22px rgba(35, 48, 71, 0.07);
 }
 
 .display-title {
-  color: var(--blue-deep);
+  color: #3572ab;
   font-family: var(--title-font);
   font-size: clamp(1.9rem, 5.4vw, 3.45rem);
-  font-weight: 700;
-  line-height: 1.14;
+  font-weight: 520;
+  line-height: 1.16;
   text-wrap: balance;
   text-shadow:
-    0 0.1rem 0 rgba(255, 255, 255, 0.76),
-    0 0.85rem 1.8rem rgba(49, 114, 178, 0.16);
+    0 0.08rem 0 rgba(255, 255, 255, 0.68),
+    0 0.62rem 1.45rem rgba(49, 114, 178, 0.12);
 }
 
 p {
@@ -456,10 +455,15 @@ p {
 
 .split-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(7.8rem, 0.48fr);
-  gap: clamp(1rem, 4vw, 1.8rem);
+  grid-template-columns: minmax(0, 1fr) minmax(8.4rem, 0.42fr);
+  gap: clamp(1.15rem, 4vw, 2rem);
   align-items: center;
+  width: min(100%, 44rem);
   padding: clamp(1.35rem, 5vw, 2.2rem);
+}
+
+.split-card h2 {
+  font-size: clamp(1.85rem, 5vw, 2.85rem);
 }
 
 .gift-label {
@@ -648,11 +652,11 @@ p {
 
 .finale-card .display-title {
   font-family: var(--title-font);
-  font-weight: 700;
+  font-weight: 520;
   line-height: 1.12;
   text-shadow:
-    0 0.1rem 0 rgba(255, 255, 255, 0.82),
-    0 1rem 2.2rem rgba(49, 114, 178, 0.18);
+    0 0.08rem 0 rgba(255, 255, 255, 0.78),
+    0 0.75rem 1.7rem rgba(49, 114, 178, 0.14);
 }
 
 .restart-action {
